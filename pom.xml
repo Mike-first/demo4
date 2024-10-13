@@ -1,0 +1,163 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.hill</groupId>
+    <artifactId>demo4</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <scm>
+        <connection>scm:git:git@github.com:Mike-first/demo4.git</connection>
+        <developerConnection>scm:git:git@github.com:Mike-first/demo4.git</developerConnection>
+        <url>https://github.com/Mike-first/demo4</url>
+    </scm>
+
+    <properties>
+        <java.version>1.8</java.version>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <project.encondig>UTF-8</project.encondig>
+        <project.build.sourceEncoding>${project.encondig}</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>${project.encondig}</project.reporting.outputEncoding>
+
+        <selenide.version>6.16.0</selenide.version>
+        <bonigarcia.version>5.9.2</bonigarcia.version>
+        <cucumber.version>5.7.0</cucumber.version>
+        <testng.version>7.5.1</testng.version>
+        <allure.version>2.29.0</allure.version>
+        <slf4j.version>1.7.32</slf4j.version>
+        <json.version>20240303</json.version>
+        <okhttp.version>3.11.0</okhttp.version>
+        <aspectj.version>1.9.20.1</aspectj.version>
+        <rest-assured.version>5.4.0</rest-assured.version>
+<!--        plugins-->
+        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+        <maven-surefire-plugin.version>3.2.3</maven-surefire-plugin.version>
+        <allure-maven.version>2.11.2</allure-maven.version>
+    </properties>
+
+    <dependencies>
+        <!-- driver -->
+        <dependency>
+            <groupId>com.codeborne</groupId>
+            <artifactId>selenide</artifactId>
+            <version>${selenide.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.bonigarcia</groupId>
+            <artifactId>webdrivermanager</artifactId>
+            <version>${bonigarcia.version}</version>
+        </dependency>
+
+        <!-- test -->
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>${testng.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-java</artifactId>
+            <version>${cucumber.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-testng</artifactId>
+            <version>${cucumber.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>${rest-assured.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- utilities -->
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>${json.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>${okhttp.version}</version>
+        </dependency>
+
+        <!-- logging -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+
+        <!-- reporting -->
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-testng</artifactId>
+            <version>${allure.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin.version}</version>
+                <configuration>
+                    <systemProperties>
+                        <allure.results.directory>target/allure-results</allure.results.directory>
+                    </systemProperties>
+                    <useFile>false</useFile>
+                    <argLine>
+                        -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
+                    </argLine>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.aspectj</groupId>
+                        <artifactId>aspectjweaver</artifactId>
+                        <version>${aspectj.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+
+            <plugin>
+                <groupId>io.qameta.allure</groupId>
+                <artifactId>allure-maven</artifactId>
+                <version>${allure-maven.version}</version>
+                <executions>
+                    <execution>
+                        <id>allure-results</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    </build>
+</project>
